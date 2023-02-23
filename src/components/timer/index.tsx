@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import css from './index.module.scss'
 
 const Timer = () => {
   const [minute, setMinute] = useState(0)
@@ -25,7 +26,7 @@ const Timer = () => {
   }, [second])
 
   return (
-    <div className="text-lg font-medium text-[#4ade80] bg-stone-100 inline-block p-2 rounded">
+    <div className={css.timer}>
       {minute}:{second}:{count}
     </div>
   )

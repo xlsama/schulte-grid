@@ -1,0 +1,10 @@
+.main {
+  height: 100vh;
+  padding: 50px;
+  text-align: center;
+
+  .game_container {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+  }
+}
