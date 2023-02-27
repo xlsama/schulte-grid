@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { TimerStatus } from '../../App'
 import css from './index.module.scss'
 
 const format = (time: number) => {
@@ -8,19 +9,28 @@ const format = (time: number) => {
   return time
 }
 
-const Timer = () => {
+type Props = {
+  timerStatus: TimerStatus
+  setTimerStatus: (status: TimerStatus) => void
+}
+
+const Timer: React.FC<Props> = ({ timerStatus, setTimerStatus }) => {
   const [hour, setHour] = useState(0)
   const [minute, setMinute] = useState(0)
   const [second, setSecond] = useState(0)
   const [millisecond, setMillisecond] = useState(0)
+  const timer = useRef(0)
 
   useEffect(() => {
-    const interval = 100
-    const timer = setInterval(() => {
-      setMillisecond((prev) => (prev += interval))
-    }, interval)
-    return () => clearInterval(timer)
-  }, [])
+    if (timerStatus === TimerStatus.Running) {
+      const interval = 100
+      timer.current = setInterval(() => {
+        setMillisecond((prev) => (prev += interval))
+      }, interval)
+    }
+
+    return () => clearInterval(timer.current)
+  }, [timerStatus])
 
   useEffect(() => {
     if (millisecond >= 1000) {

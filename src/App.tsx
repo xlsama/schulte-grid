@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Square from './components/square'
 import Timer from './components/timer'
 import css from './app.module.scss'
+import Actions from './components/actions'
 
 const randomSortArray = (arr: any[]) => {
   const stack = []
@@ -11,6 +12,12 @@ const randomSortArray = (arr: any[]) => {
     arr.splice(index, 1)
   }
   return stack
+}
+
+export enum TimerStatus {
+  Pending,
+  Running,
+  Finished,
 }
 
 function App() {
@@ -26,9 +33,11 @@ function App() {
     ),
   )
   const [next, setNext] = useState(0)
+  const [timerStatus, setTimerStatus] = useState(TimerStatus.Pending)
 
   useEffect(() => {
     if (next === squares.length) {
+      setTimerStatus(TimerStatus.Finished)
       alert('结束')
     }
   }, [next])
@@ -58,7 +67,9 @@ function App() {
 
   return (
     <main className={css.main}>
-      <Timer />
+      <Timer timerStatus={timerStatus} setTimerStatus={setTimerStatus} />
+      <Actions timerStatus={timerStatus} setTimerStatus={setTimerStatus} />
+
       <ul
         className={css.game_container}
         style={{
