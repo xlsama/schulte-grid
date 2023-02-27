@@ -4,7 +4,8 @@
   text-align: center;
 
   .game_container {
+    margin-top: 50px;
     display: grid;
-    grid-template-columns: repeat(5, auto);
+    justify-content: center;
   }
 }

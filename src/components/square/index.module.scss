@@ -1,4 +1,13 @@
 .square {
   padding: 50px;
   border: 1px solid #ccc;
+  margin: 0 -1px -1px 0;
+  font-weight: 500;
+  font-size: 20px;
+  transition: background 0.3s;
+
+  &:hover,
+  &.checked {
+    background: #efefef;
+  }
 }

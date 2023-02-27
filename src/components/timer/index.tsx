@@ -1,33 +1,52 @@
 import { useEffect, useState } from 'react'
 import css from './index.module.scss'
 
+const format = (time: number) => {
+  if (time < 10) {
+    return `0${time}`
+  }
+  return time
+}
+
 const Timer = () => {
+  const [hour, setHour] = useState(0)
   const [minute, setMinute] = useState(0)
   const [second, setSecond] = useState(0)
-  const [count, setCount] = useState(0)
+  const [millisecond, setMillisecond] = useState(0)
 
   useEffect(() => {
-    const timer = setInterval(() => setCount((count) => (count += 10)), 100)
+    const interval = 100
+    const timer = setInterval(() => {
+      setMillisecond((prev) => (prev += interval))
+    }, interval)
     return () => clearInterval(timer)
   }, [])
 
   useEffect(() => {
-    if (count === 100) {
-      setSecond((second) => ++second)
-      setCount(0)
+    if (millisecond >= 1000) {
+      setMillisecond(0)
+      setSecond((prev) => ++prev)
     }
-  }, [count])
+  }, [millisecond])
 
   useEffect(() => {
-    if (second === 60) {
-      setMinute((minute) => ++minute)
+    if (second >= 60) {
       setSecond(0)
+      setMinute((prev) => ++prev)
     }
   }, [second])
 
+  useEffect(() => {
+    if (minute >= 60) {
+      setMinute(0)
+      setHour((prev) => ++prev)
+    }
+  }, [minute])
+
   return (
     <div className={css.timer}>
-      {minute}:{second}:{count}
+      <span>{format(hour)}</span>:<span>{format(minute)}</span>:
+      <span>{format(second)}</span>:<span>{format(millisecond / 10)}</span>
     </div>
   )
 }
